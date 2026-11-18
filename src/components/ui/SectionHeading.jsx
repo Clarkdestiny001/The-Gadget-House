@@ -1,7 +1,7 @@
-import { ArrowRight } from "lucide-react";
+import Icon from "./Icon.jsx";
 
 // Numbered section header, e.g. "02 / Featured". Optional link on the right.
-export default function SectionHeading({ index, eyebrow, title, linkLabel, linkHref = "#" }) {
+export default function SectionHeading({ index, eyebrow, title, linkLabel, linkHref }) {
   return (
     <div className="flex items-end justify-between gap-4 border-b border-ink pb-4">
       <div>
@@ -12,13 +12,13 @@ export default function SectionHeading({ index, eyebrow, title, linkLabel, linkH
           {title}
         </h2>
       </div>
-      {linkLabel && (
+      {linkLabel && linkHref && (
         <a
           href={linkHref}
-          className="hidden shrink-0 items-center gap-1.5 text-sm font-semibold hover:text-signal-dark sm:inline-flex"
+          className="hidden shrink-0 items-center gap-1.5 text-sm font-semibold hover:text-accent-dark sm:inline-flex"
         >
           {linkLabel}
-          <ArrowRight className="size-4" aria-hidden="true" />
+          <Icon name="arrow-right" className="size-4" />
         </a>
       )}
     </div>

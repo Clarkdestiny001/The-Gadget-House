@@ -1,29 +1,34 @@
-import { Star } from "lucide-react";
-import ProductImage from "./ProductImage.jsx";
+import Icon from "../ui/Icon.jsx";
+import ProductPhoto from "./ProductPhoto.jsx";
 import AddToCart from "./AddToCart.jsx";
+import { useWishlist } from "../../context/WishlistContext.jsx";
 import { formatPrice } from "../../lib/format.js";
 
 export default function ProductCard({ product }) {
-  const { name, brand, price, compareAt, rating, reviews, badge, specs, kind, tone, tint, image } = product;
+  const { name, brand, price, compareAt, rating, reviews, badge, specs } = product;
+  const { has, toggle } = useWishlist();
+  const wished = has(product.id);
 
   return (
-    <article className="group flex h-full flex-col border border-line bg-card">
-      <div className="relative aspect-square overflow-hidden" style={{ backgroundColor: tint }}>
-        {image ? (
-          <img src={image} alt={name} loading="lazy" className="size-full object-cover" />
-        ) : (
-          <ProductImage
-            kind={kind}
-            tone={tone}
-            label={`${brand} ${name}`}
-            className="p-5 transition-transform duration-300 group-hover:scale-[1.03] sm:p-8"
-          />
-        )}
+    <article className="flex h-full flex-col border border-line bg-card" data-testid="product-card">
+      <div className="relative aspect-square overflow-hidden bg-wash">
+        <ProductPhoto product={product} />
         {badge && (
-          <span className="absolute left-0 top-3 bg-ink px-2 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-paper sm:text-[11px]">
+          <span className="absolute left-0 top-3 bg-ink px-2 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-white sm:text-[11px]">
             {badge}
           </span>
         )}
+        <button
+          type="button"
+          onClick={() => toggle(product.id)}
+          aria-pressed={wished}
+          aria-label={wished ? `Remove ${name} from wishlist` : `Add ${name} to wishlist`}
+          className={`absolute right-2 top-2 grid size-10 place-items-center bg-white transition-colors hover:text-accent-dark ${
+            wished ? "text-accent" : "text-ink"
+          }`}
+        >
+          <Icon name="heart" filled={wished} className="size-5" />
+        </button>
       </div>
 
       <div className="flex flex-1 flex-col p-3 sm:p-4">
@@ -39,7 +44,7 @@ export default function ProductCard({ product }) {
         </p>
 
         <div className="mt-2 flex items-center gap-1 text-xs text-muted">
-          <Star className="size-3.5 fill-ink text-ink" aria-hidden="true" />
+          <Icon name="star" className="size-3.5 text-ink" strokeWidth={1} />
           <span className="font-medium text-ink">{rating.toFixed(1)}</span>
           <span>({reviews.toLocaleString()})</span>
         </div>

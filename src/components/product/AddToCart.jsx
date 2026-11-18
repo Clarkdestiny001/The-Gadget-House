@@ -1,13 +1,14 @@
-import { Minus, Plus, ShoppingBag } from "lucide-react";
 import Button from "../ui/Button.jsx";
+import Icon from "../ui/Icon.jsx";
+import QuantityStepper from "../ui/QuantityStepper.jsx";
 import { useCart } from "../../context/CartContext.jsx";
 
 // Shows "Add to cart" until the item is in the cart, then a quantity stepper.
 export default function AddToCart({ product }) {
-  const { quantityOf, add, remove } = useCart();
-  const qty = quantityOf(product.id);
+  const { quantityOf, add, decrement, maxQuantity } = useCart();
+  const quantity = quantityOf(product.id);
 
-  if (qty === 0) {
+  if (quantity === 0) {
     return (
       <Button
         size="sm"
@@ -15,37 +16,21 @@ export default function AddToCart({ product }) {
         onClick={() => add(product.id)}
         aria-label={`Add ${product.name} to cart`}
       >
-        <ShoppingBag className="size-4" aria-hidden="true" />
+        <Icon name="bag" className="size-4" />
         Add to cart
       </Button>
     );
   }
 
   return (
-    <div
-      className="flex h-10 w-full items-stretch border border-ink bg-card"
-      role="group"
-      aria-label={`${product.name} quantity`}
-    >
-      <button
-        type="button"
-        onClick={() => remove(product.id)}
-        className="grid w-11 place-items-center transition-colors hover:bg-ink hover:text-paper"
-        aria-label="Decrease quantity"
-      >
-        <Minus className="size-4" aria-hidden="true" />
-      </button>
-      <span className="grid flex-1 place-items-center font-mono text-sm" aria-live="polite">
-        {qty} in cart
-      </span>
-      <button
-        type="button"
-        onClick={() => add(product.id)}
-        className="grid w-11 place-items-center transition-colors hover:bg-ink hover:text-paper"
-        aria-label="Increase quantity"
-      >
-        <Plus className="size-4" aria-hidden="true" />
-      </button>
-    </div>
+    <QuantityStepper
+      className="w-full"
+      label={product.name}
+      quantity={quantity}
+      suffix=" in cart"
+      onDecrement={() => decrement(product.id)}
+      onIncrement={() => add(product.id)}
+      canIncrement={quantity < maxQuantity}
+    />
   );
 }

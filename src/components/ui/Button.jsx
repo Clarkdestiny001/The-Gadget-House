@@ -1,9 +1,9 @@
 import { cn } from "../../lib/format.js";
 
 const variants = {
-  primary: "bg-ink text-paper hover:bg-signal hover:text-ink",
-  accent: "bg-signal text-ink hover:bg-ink hover:text-paper",
-  outline: "border border-ink text-ink hover:bg-ink hover:text-paper",
+  primary: "bg-ink text-white hover:bg-accent",
+  accent: "bg-accent text-white hover:bg-accent-dark",
+  outline: "border border-ink text-ink hover:bg-ink hover:text-white",
 };
 
 const sizes = {

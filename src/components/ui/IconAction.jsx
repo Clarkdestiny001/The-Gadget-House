@@ -1,41 +1,29 @@
-import { cn } from "../../lib/format.js";
+import Icon from "./Icon.jsx";
 
-// Icon button used in the header (account, wishlist, cart).
-export default function IconAction({ icon: Icon, label, count, showLabel = false, onClick, href }) {
-  const content = (
-    <>
+// Header icon button (wishlist, cart). The badge only shows when count > 0.
+export default function IconAction({ icon, label, count = 0, onClick, expanded }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={count > 0 ? `${label}, ${count} ${count === 1 ? "item" : "items"}` : label}
+      aria-haspopup="dialog"
+      aria-expanded={expanded}
+      className="inline-flex h-11 items-center gap-2 px-2.5 text-ink transition-colors hover:text-accent-dark"
+    >
       <span className="relative">
-        <Icon className="size-6" strokeWidth={1.75} aria-hidden="true" />
-        {typeof count === "number" && (
+        <Icon name={icon} className="size-6" />
+        {count > 0 && (
           <span
-            className="absolute -right-2 -top-2 grid min-w-[1.125rem] place-items-center bg-signal px-1 font-mono text-[10px] font-medium leading-[1.125rem] text-ink"
+            data-testid={`${icon}-count`}
+            className="absolute -right-2.5 -top-2 grid min-w-[1.125rem] place-items-center bg-accent px-1 font-mono text-[10px] font-medium leading-[1.125rem] text-white"
             aria-hidden="true"
           >
             {count}
           </span>
         )}
       </span>
-      {showLabel && <span className="hidden text-sm font-medium lg:inline">{label}</span>}
-    </>
-  );
-
-  const classes = cn(
-    "inline-flex h-11 items-center gap-2 px-2.5 text-ink transition-colors hover:text-signal-dark",
-  );
-  const aria = {
-    "aria-label": typeof count === "number" ? `${label}, ${count} items` : label,
-  };
-
-  if (href) {
-    return (
-      <a href={href} className={classes} {...aria}>
-        {content}
-      </a>
-    );
-  }
-  return (
-    <button type="button" onClick={onClick} className={classes} {...aria}>
-      {content}
+      <span className="hidden text-sm font-medium lg:inline">{label}</span>
     </button>
   );
 }

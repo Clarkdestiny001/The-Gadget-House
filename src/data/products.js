@@ -1,12 +1,13 @@
 // Sample catalogue. Brands are fictional. In a later stage this file is
 // replaced by an API or admin-managed data source with the same shape.
 //
-// kind  -> which illustration ProductImage draws
-// tone  -> accent colour used inside the illustration
-// tint  -> background colour of the image tile
-// image -> optional photo URL; when set, it replaces the illustration
+// image    -> photo path inside /public/products (see photo() below)
+// keywords -> extra words the search should match
+// featured -> shown in the home page "Featured products" section
 
-export const products = [
+const photo = (slug) => `/products/${slug}.jpg`;
+
+const catalogue = [
   {
     id: "p-auralis-anc",
     slug: "auralis-studio-anc-headphones",
@@ -19,9 +20,7 @@ export const products = [
     reviews: 1284,
     badge: "Best seller",
     specs: ["40h battery", "Active noise cancelling"],
-    kind: "headphones",
-    tone: "#ff6a3d",
-    tint: "#ece5d3",
+    keywords: ["headset", "bluetooth", "over-ear", "anc", "noise cancelling"],
     featured: true,
   },
   {
@@ -36,9 +35,7 @@ export const products = [
     reviews: 892,
     badge: null,
     specs: ["28h with case", "IPX4 sweat proof"],
-    kind: "earbuds",
-    tone: "#7fa88b",
-    tint: "#e3e8dc",
+    keywords: ["earphones", "bluetooth", "in-ear", "wireless"],
     featured: true,
   },
   {
@@ -53,9 +50,7 @@ export const products = [
     reviews: 2310,
     badge: "New",
     specs: ["6.4in OLED 120Hz", "50MP dual camera"],
-    kind: "phone",
-    tone: "#2f4bff",
-    tint: "#dfe3ee",
+    keywords: ["smartphone", "mobile", "android", "cell"],
     featured: true,
   },
   {
@@ -70,9 +65,7 @@ export const products = [
     reviews: 573,
     badge: "Save $40",
     specs: ["GPS built in", "7 day battery"],
-    kind: "watch",
-    tone: "#ff6a3d",
-    tint: "#efe0d6",
+    keywords: ["watch", "smartwatch", "fitness", "tracker", "gps"],
     featured: true,
   },
   {
@@ -87,9 +80,7 @@ export const products = [
     reviews: 421,
     badge: null,
     specs: ["2.8K display", "18h battery"],
-    kind: "laptop",
-    tone: "#8ea3b5",
-    tint: "#e2e6e9",
+    keywords: ["laptop", "notebook", "computer", "pc"],
     featured: true,
   },
   {
@@ -104,9 +95,7 @@ export const products = [
     reviews: 1650,
     badge: "Save $20",
     specs: ["12h playtime", "Waterproof IP67"],
-    kind: "speaker",
-    tone: "#d9b44a",
-    tint: "#ede6cf",
+    keywords: ["speaker", "portable", "wireless", "bluetooth"],
     featured: true,
   },
   {
@@ -121,9 +110,7 @@ export const products = [
     reviews: 187,
     badge: null,
     specs: ["24MP APS-C", "4K 60fps video"],
-    kind: "camera",
-    tone: "#ff6a3d",
-    tint: "#e8e2d8",
+    keywords: ["camera", "photography", "video", "lens"],
     featured: true,
   },
   {
@@ -138,9 +125,7 @@ export const products = [
     reviews: 764,
     badge: null,
     specs: ["Hot-swap switches", "Bluetooth + USB-C"],
-    kind: "keyboard",
-    tone: "#2f4bff",
-    tint: "#e4e4ea",
+    keywords: ["keyboard", "typing", "wireless", "keys"],
     featured: true,
   },
   {
@@ -155,9 +140,7 @@ export const products = [
     reviews: 308,
     badge: null,
     specs: ["Hall effect sticks", "30h battery"],
-    kind: "controller",
-    tone: "#7fa88b",
-    tint: "#e1e7dd",
+    keywords: ["gamepad", "controller", "console", "pc", "games"],
     featured: false,
   },
   {
@@ -172,11 +155,13 @@ export const products = [
     reviews: 219,
     badge: null,
     specs: ["16M colours", "Works with voice assistants"],
-    kind: "bulb",
-    tone: "#d9b44a",
-    tint: "#eee7d2",
+    keywords: ["light", "lighting", "lamp", "led", "bulbs"],
     featured: false,
   },
 ];
 
+export const products = catalogue.map((p) => ({ ...p, image: photo(p.slug) }));
 export const featuredProducts = products.filter((p) => p.featured);
+
+const byId = new Map(products.map((p) => [p.id, p]));
+export const getProduct = (id) => byId.get(id);

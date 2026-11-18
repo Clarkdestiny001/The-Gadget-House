@@ -1,9 +1,10 @@
-import { ArrowRight, Check } from "lucide-react";
 import Container from "../layout/Container.jsx";
 import Button from "../ui/Button.jsx";
-import ProductImage from "../product/ProductImage.jsx";
+import Icon from "../ui/Icon.jsx";
+import ProductPhoto from "../product/ProductPhoto.jsx";
 import { featuredProducts } from "../../data/products.js";
 import { formatPrice } from "../../lib/format.js";
+import { shopHref } from "../../lib/router.js";
 import { site } from "../../config/site.js";
 
 const promises = [
@@ -12,17 +13,17 @@ const promises = [
   "2-year warranty",
 ];
 
-// Four picks shown in the hero "device wall". Order matters for the layout.
-const wall = ["p-kestrel-x5", "p-auralis-anc", "p-slate-14", "p-tempo-watch"]
+// Four picks for the "this week" list. Each row opens its category.
+const picks = ["p-kestrel-x5", "p-auralis-anc", "p-slate-14", "p-tempo-watch"]
   .map((id) => featuredProducts.find((p) => p.id === id))
   .filter(Boolean);
 
 export default function Hero() {
   return (
-    <section className="border-b border-line">
-      <Container className="grid gap-10 py-10 sm:py-14 lg:grid-cols-12 lg:gap-12 lg:py-20">
-        <div className="flex flex-col justify-center lg:col-span-6">
-          <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
+    <section className="border-b border-line bg-card">
+      <Container className="grid grid-cols-1 gap-10 py-10 sm:py-14 lg:grid-cols-12 lg:gap-14 lg:py-20">
+        <div className="flex min-w-0 flex-col justify-center lg:col-span-7">
+          <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent-dark">
             Electronics, sorted
           </p>
           <h1 className="mt-4 font-display text-[2.75rem] font-extrabold leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
@@ -34,57 +35,64 @@ export default function Hero() {
           </p>
 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Button href="#featured" variant="primary" className="sm:min-w-44">
-              Shop featured
-              <ArrowRight className="size-4" aria-hidden="true" />
+            <Button href={shopHref()} variant="primary" className="sm:min-w-48">
+              Shop all products
+              <Icon name="arrow-right" className="size-4" />
             </Button>
-            <Button href="#categories" variant="outline" className="sm:min-w-44">
-              Browse categories
+            <Button href={shopHref({ deal: "1" })} variant="outline" className="sm:min-w-48">
+              See today&apos;s deals
             </Button>
           </div>
 
           <ul className="mt-8 flex flex-col gap-2 text-sm sm:flex-row sm:flex-wrap sm:gap-x-6">
             {promises.map((text) => (
               <li key={text} className="flex items-center gap-2">
-                <Check className="size-4 text-signal-dark" strokeWidth={2.5} aria-hidden="true" />
+                <Icon name="check" className="size-4 text-accent-dark" strokeWidth={2.25} />
                 {text}
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="lg:col-span-6" aria-label="Featured devices">
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            {wall.map((product, i) => (
+        <aside className="min-w-0 lg:col-span-5" aria-labelledby="picks-heading">
+          <div className="border border-ink bg-paper">
+            <div className="flex items-center justify-between border-b border-ink px-4 py-3">
+              <h2 id="picks-heading" className="font-mono text-xs uppercase tracking-[0.14em]">
+                This week&apos;s picks
+              </h2>
               <a
-                key={product.id}
-                href="#featured"
-                className={`group relative flex aspect-[4/5] flex-col justify-between overflow-hidden border border-line p-3 sm:p-4 ${
-                  i % 2 === 1 ? "mt-6 sm:mt-10" : ""
-                }`}
-                style={{ backgroundColor: product.tint }}
+                href={shopHref()}
+                className="text-sm font-semibold text-accent-dark hover:underline"
               >
-                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/70 sm:text-[11px]">
-                  {String(i + 1).padStart(2, "0")} / {product.brand}
-                </span>
-                <ProductImage
-                  kind={product.kind}
-                  tone={product.tone}
-                  label={`${product.brand} ${product.name}`}
-                  className="absolute inset-x-0 top-1/2 -translate-y-[55%] p-6 transition-transform duration-300 group-hover:scale-[1.04] sm:p-10"
-                />
-                <span className="relative z-10 flex items-end justify-between gap-2">
-                  <span className="line-clamp-2 max-w-[70%] font-display text-sm font-bold leading-tight sm:text-base">
-                    {product.name}
-                  </span>
-                  <span className="bg-ink px-1.5 py-1 font-mono text-xs text-paper">
-                    {formatPrice(product.price)}
-                  </span>
-                </span>
+                View all
               </a>
-            ))}
+            </div>
+            <ul className="divide-y divide-line">
+              {picks.map((product) => (
+                <li key={product.id}>
+                  <a
+                    href={shopHref({ category: product.category })}
+                    className="flex items-center gap-4 p-3 transition-colors hover:bg-card sm:p-4"
+                  >
+                    <span className="size-16 shrink-0 overflow-hidden bg-wash sm:size-20">
+                      <ProductPhoto product={product} />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+                        {product.brand}
+                      </span>
+                      <span className="block truncate font-display text-base font-bold sm:text-lg">
+                        {product.name}
+                      </span>
+                      <span className="block text-sm text-muted">{formatPrice(product.price)}</span>
+                    </span>
+                    <Icon name="arrow-right" className="size-5 shrink-0 text-muted" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
+        </aside>
       </Container>
     </section>
   );

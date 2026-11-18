@@ -7,57 +7,10 @@ export const site = {
   freeShippingThreshold: 75,
 };
 
-export const primaryNav = [
-  { label: "New in", href: "#featured" },
-  { label: "Deals", href: "#featured" },
-  { label: "Brands", href: "#categories" },
-  { label: "Support", href: "#support" },
-];
-
-export const footerColumns = [
-  {
-    title: "Shop",
-    links: [
-      { label: "Phones", href: "#" },
-      { label: "Laptops", href: "#" },
-      { label: "Audio", href: "#" },
-      { label: "Wearables", href: "#" },
-      { label: "Cameras", href: "#" },
-      { label: "Gaming", href: "#" },
-    ],
-  },
-  {
-    title: "Support",
-    links: [
-      { label: "Help centre", href: "#" },
-      { label: "Delivery info", href: "#" },
-      { label: "Returns", href: "#" },
-      { label: "Warranty", href: "#" },
-      { label: "Contact us", href: "#" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About us", href: "#" },
-      { label: "Careers", href: "#" },
-      { label: "Press", href: "#" },
-      { label: "Store locator", href: "#" },
-    ],
-  },
-  {
-    title: "Account",
-    links: [
-      { label: "Sign in", href: "#" },
-      { label: "Orders", href: "#" },
-      { label: "Wishlist", href: "#" },
-      { label: "Cart", href: "#" },
-    ],
-  },
-];
-
-export const legalLinks = [
-  { label: "Privacy", href: "#" },
-  { label: "Terms", href: "#" },
-  { label: "Cookies", href: "#" },
+// Plain statements about the store. These are information, not links.
+export const storePromises = [
+  { icon: "truck", title: "Fast delivery", text: "Free on orders over $75." },
+  { icon: "return", title: "30-day returns", text: "Changed your mind? Send it back." },
+  { icon: "shield", title: "2-year warranty", text: "On every product we sell." },
+  { icon: "headset", title: "Real support", text: "Talk to people who know the kit." },
 ];
