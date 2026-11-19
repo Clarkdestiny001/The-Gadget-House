@@ -1,11 +1,11 @@
 // Sample catalogue. Brands are fictional. In a later stage this file is
 // replaced by an API or admin-managed data source with the same shape.
 //
-// image    -> photo path inside /public/products (see photo() below)
+// image    -> photo path inside /public/product (see photo() below)
 // keywords -> extra words the search should match
 // featured -> shown in the home page "Featured products" section
 
-const photo = (slug) => `/products/${slug}.jpg`;
+const photo = (slug) => `/product/${slug}.jpg`;
 
 const catalogue = [
   {
